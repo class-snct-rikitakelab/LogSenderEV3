@@ -1,0 +1,27 @@
+{
+   "manifest_version":2,
+
+   "name": "LogViewer",
+   "version": "0.1",
+
+   "description": "now testing",
+   "icons": { "16": "./assets/icon16.png",
+              "48": "./assets/icon48.png",
+             "128": "./assets/icon128.png" },
+
+   "app": {
+      "background": {
+         "scripts": ["background.js"],
+         "persistent": false
+      }
+   },
+   "sockets": {
+      "tcp": {
+         "connect": "*"
+      },
+      "tcpServer": {
+         "listen": "*"
+      }
+   },
+   "permissions": []
+}
