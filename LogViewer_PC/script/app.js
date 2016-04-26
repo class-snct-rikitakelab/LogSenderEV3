@@ -23,12 +23,13 @@ upload.addEventListener("click", function () {
 /* xlengthset = document.getElementById("xlenset");
 xlengthset.addEventListener("click", function() {
    document.length.x_length.value;
-
 });
 var xlengthset = document.getElementById("xlenset");
 xlengthset.addEventListener("click", function() {
-
 });*/
+/*while (true) {
+  updateGlaph();
+}*/
 //glaphTest();
 function glaphTest() {
     parseData("{\"name\":\"value1\",\"type\":\"Number\",\"value\":10,\"time\":1}{\"name\":\"value1\",\"type\":\"Num");

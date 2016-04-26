@@ -6,15 +6,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+
+/**
+ *
+ * ログ送信クラス
+ *
+ * */
 public class LogSender {
 
 	private static final int SOCKET_PORT = 7360;
-
 	private ServerSocket server = null;
 	private Socket socket = null;
-	// private DataInputStream inputStream = null;
 	private DataOutputStream outputStream = null;
-	// private String ip = "10.0.1.1";
 	private ArrayList<Log> Logs;
 
 
@@ -25,7 +28,6 @@ public class LogSender {
 
 	/**
 	 * ビューアと接続します。
-	 *
 	 * @return 接続に成功した場合はtrue、失敗した場合はfalseを返します。
 	 */
 	public boolean connect() {
@@ -85,60 +87,69 @@ public class LogSender {
 	}
 */
 
+	/** ログデータを追加します。
+	 *  @param name ログの名前
+	 *  value ログの値
+	 *  time タイムスタンプ */
 	public void addLog(String name, String value, float time) {
 		Log log = new Log();
 		log.setName(name);
-		log.setType("Number");
 		log.setValue(value);
 		log.setTime(time);
 		Logs.add(log);
 	}
+
+	/** ログデータを追加します。
+	 *  @param name ログの名前
+	 *  value ログの値
+	 *  time タイムスタンプ */
 	public void addLog(String name, int value, float time) {
 		Log log = new Log();
 		log.setName(name);
-		log.setType("Number");
 		log.setValue(value);
 		log.setTime(time);
 		Logs.add(log);
 	}
+
+	/** ログデータを追加します。
+	 *  @param name ログの名前
+	 *  value ログの値
+	 *  time タイムスタンプ */
 	public void addLog(String name, float value, float time) {
 		Log log = new Log();
 		log.setName(name);
-		log.setType("Number");
 		log.setValue(value);
 		log.setTime(time);
 		Logs.add(log);
 	}
-	public void setGlaph(String name, String type,String value){
+
+	/** ログの表示方法を変更します。
+	 *  @param name ログの名前
+	 *  value ログの値 */
+	public void setGlaph(String name, String value){
 		Log log = new Log();
-		log.setName(name);
-		log.setType(type);
+		log.setName("#" + name);
 		log.setValue(value);
 		log.setTime(0);
 		Logs.add(log);
 	}
 
+	/** 送信していないログデータをすべて削除します。 */
 	public void clear(){
 		Logs.clear();
 	}
 
 	/**
 	 * ビューアにログデータを送信します。
-	 *
-	 * @param log
-	 *            ログデータです。<br>
-	 * @param time
-	 *            現在時間です。<br>
-	 *            単位はミリ秒です。 省略可能です。省略した場合は自動的に取得します。
 	 * @return 送信に成功した場合はtrue、失敗した場合はfalseを返します。
 	 */
 	public boolean send() {
+		if(outputStream == null)return false;
 		String json = "";
 		int size = Logs.size();
 		if(!Logs.isEmpty()){
 			for (int i = 0;i<size;++i) {
-				json += Logs.get(0).getJson();
-				Logs.remove(0);
+				json += Logs.get(i).getJson();
 			}
 		}
 		try {
@@ -146,6 +157,7 @@ public class LogSender {
 		} catch (IOException ex) {
 			return false;
 		}
+		Logs.clear();
 
 		return true;
 	}
@@ -153,15 +165,11 @@ public class LogSender {
 
 class Log {
 	private String name;//ログの名前
-	private String type;//valueが指し示すもの(int,floatなどの型,LogMaxValueなどの表示設定)
 	private String value;//ログなどの値
 	private float time;//タイムスタンプ
 
 	public String getName() {return name;}
 	public void setName(String name) {this.name = name;}
-
-	public String getType() {return type;}
-	public void setType(String type) {this.type = type;}
 
 	public String getValue() {return value;}
 	public void setValue(String value) {this.value = value;}
@@ -172,8 +180,8 @@ class Log {
 	public void setTime(float time) {this.time = time;}
 
 	public String getJson(){
-		return "{\"name\":\"" + name + "\",\"type\":\"" + type + "\",\"value\":" + value + ",\"time\":" + time + "}";
-
+		return "{" + name + "," + value + "," + time + "}";
+		// setGlaphするときはnameの頭文字を"#"にする
 	}
 
 }

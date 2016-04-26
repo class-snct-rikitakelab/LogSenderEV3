@@ -35,7 +35,7 @@ var logGlaph = (function () {
         };
     };
     logGlaph.prototype.addData = function (data) {
-        console.log(data);
+        //console.log(data);
         //if(this.mgdata.data==[]){this.mgdata.data[0]=data;}
         //else {this.mgdata.data[this.mgdata.length]=data;}
         this.data.push(data);
@@ -72,19 +72,17 @@ function updateGlaph() {
         glaph[i].update();
     }
 }
-function changeGlaph(data) {
+function addGlaphData(data) {
     var glaphid;
     glaphid = getGlaphNumberFromName(data.name);
-    switch (data.type) {
-        case "Number":
-            delete data.name;
-            delete data.type;
-            glaph[glaphid].addData(data);
-            break;
-        default:
-            delete data.name;
-            glaph[glaphid].changeDisplay(data);
-    }
+    delete data.name;
+    glaph[glaphid].addData(data);
+}
+function changeGlaphDisplay(data) {
+    var glaphid;
+    glaphid = getGlaphNumberFromName(data.name);
+    delete data.name;
+    glaph[glaphid].changeDisplay(data);
 }
 function getGlaphNumberFromName(name) {
     var i = 0;

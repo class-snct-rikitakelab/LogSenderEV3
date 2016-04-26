@@ -3,36 +3,36 @@
 var clientSocketId: number;
 
 function createSocket() {
-chrome.sockets.tcp.create({}, function(createInfo) {
-   clientSocketId = createInfo.socketId;
+  chrome.sockets.tcp.create({}, function (createInfo) {
+    clientSocketId = createInfo.socketId;
 
-   chrome.sockets.tcp.connect(clientSocketId, "10.0.1.1", 7360, function(resultCode) {
+    chrome.sockets.tcp.connect(clientSocketId, "10.0.1.1", 7360, function (resultCode) {
       if (resultCode < 0) {
-         console.log("Error: socket connect failure");
+        console.log("Error: socket connect failure");
       }
-   });
-});
+    });
+  });
 }
 
-chrome.sockets.tcp.onReceive.addListener(function(info) {
-   if (info.socketId === clientSocketId) {
-      var requestText: string = ab2str(info.data);
-      parseData(requestText);
-   }
+chrome.sockets.tcp.onReceive.addListener(function (info) {
+  if (info.socketId === clientSocketId) {
+    var requestText: string = ab2str(info.data);
+    parseData(requestText);
+  }
 });
 
-chrome.sockets.tcp.onReceiveError.addListener(function(info) {
-   console.log("Error: ", info);
-   makeDownload();
+chrome.sockets.tcp.onReceiveError.addListener(function (info) {
+  console.log("Error: ", info);
+  makeDownload();
+  updateGlaph();
 });
 
-function destroySocket(){
-   chrome.sockets.tcp.disconnect(clientSocketId);
-   chrome.sockets.tcp.close(clientSocketId);
-   makeDownload();
+function destroySocket() {
+  chrome.sockets.tcp.disconnect(clientSocketId);
+  chrome.sockets.tcp.close(clientSocketId);
+  makeDownload();
+  updateGlaph();
 }
-
-
 
 /**
  * 文字列をArrayBufferに変換する(ASCIIコード専用)
@@ -41,13 +41,13 @@ function destroySocket(){
  * @returns {ArrayBuffer}
  */
 function str2ab(text) {
-   var typedArray = new Uint8Array(text.length);
+  var typedArray = new Uint8Array(text.length);
 
-   for (var i = 0; i < typedArray.length; i++) {
-      typedArray[i] = text.charCodeAt(i);
-   }
+  for (var i = 0; i < typedArray.length; i++) {
+    typedArray[i] = text.charCodeAt(i);
+  }
 
-   return typedArray.buffer;
+  return typedArray.buffer;
 }
 
 /**
@@ -57,25 +57,13 @@ function str2ab(text) {
  * @returns {string}
  */
 function ab2str(arrayBuffer) {
-   var typedArray = new Uint8Array(arrayBuffer);
-   var text = "";
+  var typedArray = new Uint8Array(arrayBuffer);
+  var text = "";
 
-   for (var i = 0; i < typedArray.length; i++) {
-      text += String.fromCharCode(typedArray[i]);
-   }
+  for (var i = 0; i < typedArray.length; i++) {
+    text += String.fromCharCode(typedArray[i]);
+  }
 
-   return text;
+  return text;
 }
-function ab2Uni(arrayBuffer) {
-   var typedArray = new Uint8Array(arrayBuffer);
-   var text = "";
 
-   text = Encoding.convert(typedArray, "UTF8");
-   text = Encoding.codeToString(text);
-   //  - 'JIS'
-   //  - 'UTF8'
-   //  - 'EUCJP'
-   //  - 'SJIS'
-   //  - 'UNICODE' (JavaScript Unicode String/Array)
-   return text;
-}

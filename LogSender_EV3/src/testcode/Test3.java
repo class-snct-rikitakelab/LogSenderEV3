@@ -14,11 +14,10 @@ public class Test3 {
 		LogSender sender = new LogSender();
 		sender.connect();
 		startTime = System.nanoTime();
-		while(true){
+		for(int i = 0; i < 1000; ++i){
 			sender.addLog("battery", Battery.getVoltageMilliVolt(), time());
 			sender.addLog("rand", (float)Math.random(),time());
 			sender.send();
-			Delay.msDelay(1000);
 		}
 	}
 	private static float time(){

@@ -19,11 +19,13 @@ chrome.sockets.tcp.onReceive.addListener(function (info) {
 chrome.sockets.tcp.onReceiveError.addListener(function (info) {
     console.log("Error: ", info);
     makeDownload();
+    updateGlaph();
 });
 function destroySocket() {
     chrome.sockets.tcp.disconnect(clientSocketId);
     chrome.sockets.tcp.close(clientSocketId);
     makeDownload();
+    updateGlaph();
 }
 /**
  * 文字列をArrayBufferに変換する(ASCIIコード専用)
@@ -50,17 +52,5 @@ function ab2str(arrayBuffer) {
     for (var i = 0; i < typedArray.length; i++) {
         text += String.fromCharCode(typedArray[i]);
     }
-    return text;
-}
-function ab2Uni(arrayBuffer) {
-    var typedArray = new Uint8Array(arrayBuffer);
-    var text = "";
-    text = Encoding.convert(typedArray, "UTF8");
-    text = Encoding.codeToString(text);
-    //  - 'JIS'
-    //  - 'UTF8'
-    //  - 'EUCJP'
-    //  - 'SJIS'
-    //  - 'UNICODE' (JavaScript Unicode String/Array)
     return text;
 }
