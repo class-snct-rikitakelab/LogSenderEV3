@@ -62,30 +62,6 @@ public class LogSender {
 		return true;
 	}
 
-	// ホットスポットは例を示してユーザにやらせる?
-	/*public boolean hotspot(int time) {
-		LogData ld = new LogData();
-		ld.add("a", 1);
-
-		try {
-			outputStream.writeUTF("I");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		for (int i = 0; i < 1000; ++i) {
-			send();
-		}
-
-		try {
-			outputStream.writeUTF("E");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return true;
-	}
-*/
 
 	/** ログデータを追加します。
 	 *  @param name ログの名前
@@ -148,8 +124,18 @@ public class LogSender {
 		String json = "";
 		int size = Logs.size();
 		if(!Logs.isEmpty()){
+			try {
 			for (int i = 0;i<size;++i) {
 				json += Logs.get(i).getJson();
+				if(i%72==70){
+					/*文字列長が長くなりすぎるとあれなので定期的に送信する
+					  送信間隔は50-500くらいで大丈夫だと思う   もう少し低くてもokかも */
+					outputStream.writeBytes(json);
+					json = "";
+				}
+			}
+			} catch (IOException ex) {
+				return false;
 			}
 		}
 		try {
