@@ -3,14 +3,15 @@
 function makeDownload() {
   var downloadLink = document.getElementById("download");
   if (downloadLink.hasChildNodes() == false) {
-    var downloadFile = "[";
+    var downloadFile = "";
+    if (glaph.length != 0) downloadFile += "[";
     for (var i = 0; i < glaph.length; ++i) {
       var mgdata = glaph[i].getmgdata();
       console.log(mgdata);
       downloadFile += JSON.stringify(mgdata);
       if (i + 1 < glaph.length) { downloadFile += ","; }
     }
-    downloadFile += "]";
+    if (glaph.length != 0) downloadFile += "]";
     var a = document.createElement("a");
     a.download = "log.json";
     a.href = URL.createObjectURL(new Blob([downloadFile], { type: "text.plain" }));
@@ -32,17 +33,11 @@ function uploadFile() {
     var mgdata = JSON.parse(reader.result);
     //mgdata = Encoding.codeToString(mgdata);
     console.log(mgdata, mgdata.length);
-    if (mgdata.length > 1) {
       for (var i = 0; i < mgdata.length; ++i) {
         glaph[i] = new logGlaph(mgdata[i].title);
         glaph[i].setmgdata(mgdata[i]);
         glaph[i].setdata(mgdata[i].data);
       }
-    } else {
-      glaph[0] = new logGlaph(mgdata.title);
-      glaph[0].setmgdata(mgdata);
-      glaph[0].setdata(mgdata.data);
-    }
     updateGlaph();
   };
 }
