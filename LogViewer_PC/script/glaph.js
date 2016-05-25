@@ -1,51 +1,45 @@
 /// <reference path="./reference.ts"/>
+// ログをグラフ表示するクラス 一つのクラスで一つのグラフ
+// MetricsGraphics.jsを使用しているのでそれのAPIも参照のこと
 var logGlaph = (function () {
     function logGlaph(glaphName) {
         if (glaphName === void 0) { glaphName = "glaph" + String(logGlaph.logNumber); }
-        this.data = [];
-        this.x_length = 0;
+        this.data = []; // ログデータ
         this.name = glaphName;
         this.generate();
         ++logGlaph.logNumber;
     }
+    // グラフを生成する
     logGlaph.prototype.generate = function () {
         this.div_element = document.createElement("div");
         this.div_element.id = this.name;
         var my_div = document.getElementById("chart");
-        //this.div_element.clientWidth = 300;
         document.body.insertBefore(this.div_element, my_div);
-        //document.getElementById("chart").appendChild(this.div_element);
         var idname = "#" + this.name;
         this.mgdata = {
             title: this.name,
-            //description: "説明",
             data: [],
-            // width: 800,
             full_width: true,
             height: 250,
             interpolate: "linear",
-            // interpolate_tension: 0,
             show_tooltips: false,
             transition_on_update: false,
-            //missing_is_zero: true,
             target: idname,
             x_accessor: "time",
             y_accessor: "value",
             area: false
         };
     };
+    // グラフにデータを追加する
     logGlaph.prototype.addData = function (data) {
-        //console.log(data);
-        //if(this.mgdata.data==[]){this.mgdata.data[0]=data;}
-        //else {this.mgdata.data[this.mgdata.length]=data;}
         this.data.push(data);
-        //this.data.join
     };
+    // グラフの見た目を変更する
     logGlaph.prototype.changeDisplay = function (data) {
         this.mgdata[data.type] = data.value;
     };
+    // グラフを更新する
     logGlaph.prototype.update = function () {
-        //delete this.mgdata.xax_format;
         this.mgdata.data = this.data;
         MG.data_graphic(this.mgdata);
     };
@@ -64,26 +58,30 @@ var logGlaph = (function () {
     logGlaph.prototype.setmgdata = function (data) {
         this.mgdata = data;
     };
-    logGlaph.logNumber = 1;
+    logGlaph.logNumber = 1; // グラフの番号
     return logGlaph;
 }());
+// すべてのグラフを更新する
 function updateGlaph() {
     for (var i = 0; i < glaph.length; ++i) {
         glaph[i].update();
     }
 }
+// ログ名からグラフを参照し、対応したグラフにデータを追加する
 function addGlaphData(data) {
     var glaphid;
     glaphid = getGlaphNumberFromName(data.name);
     delete data.name;
     glaph[glaphid].addData(data);
 }
+// ログ名からグラフを参照し、対応したグラフの見た目を変更する
 function changeGlaphDisplay(data) {
     var glaphid;
     glaphid = getGlaphNumberFromName(data.name);
     delete data.name;
     glaph[glaphid].changeDisplay(data);
 }
+// ログ名から対応するグラフの番号を返す
 function getGlaphNumberFromName(name) {
     var i = 0;
     for (i = 0; i < glaph.length; ++i) {

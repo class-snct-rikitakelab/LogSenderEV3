@@ -1,13 +1,13 @@
-/// <reference path="./reference.ts"/>
+﻿/// <reference path="./reference.ts"/>
 
+// ログをグラフ表示するクラス 一つのクラスで一つのグラフ
+// MetricsGraphics.jsを使用しているのでそれのAPIも参照のこと
 class logGlaph {
-  public static logNumber: number = 1;
-  //public static zeroTime: number;
-  private mgdata;
-  private name: String;
-  private div_element;
-  private data = [];
-  private x_length = 0;
+  public static logNumber: number = 1;// グラフの番号
+  private mgdata;// MetricsGraphics.jsのグラフ表示用
+  private name: String;// グラフ名
+  private div_element;// グラフを表示するhtmlの領域 グラフ生成時に追加される
+  private data = [];// ログデータ
 
   constructor(glaphName: String = "glaph" + String(logGlaph.logNumber)) {
     this.name = glaphName;
@@ -15,48 +15,40 @@ class logGlaph {
     ++logGlaph.logNumber;
   }
 
+  // グラフを生成する
   public generate() {
     this.div_element = document.createElement("div");
     this.div_element.id = this.name;
     var my_div = document.getElementById("chart");
-    //this.div_element.clientWidth = 300;
     document.body.insertBefore(this.div_element, my_div);
-    //document.getElementById("chart").appendChild(this.div_element);
     var idname: String = "#" + this.name;
     this.mgdata = {
       title: this.name,
-      //description: "説明",
       data: [],
-      // width: 800,
       full_width: true,
       height: 250,
       interpolate: "linear",
-      // interpolate_tension: 0,
       show_tooltips: false,
       transition_on_update: false,
-      //missing_is_zero: true,
       target: idname,
       x_accessor: "time",
       y_accessor: "value",
       area: false
-      //interpolate: "monotone"
     };
   }
 
+  // グラフにデータを追加する
   public addData(data) {
-    //console.log(data);
-    //if(this.mgdata.data==[]){this.mgdata.data[0]=data;}
-    //else {this.mgdata.data[this.mgdata.length]=data;}
     this.data.push(data);
-    //this.data.join
   }
 
+  // グラフの見た目を変更する
   public changeDisplay(data) {
     this.mgdata[data.type] = data.value;
   }
 
+  // グラフを更新する
   public update() {
-    //delete this.mgdata.xax_format;
     this.mgdata.data = this.data;
     MG.data_graphic(this.mgdata);
   }
@@ -82,12 +74,16 @@ class logGlaph {
   }
 }
 
+
+
+// すべてのグラフを更新する
 function updateGlaph() {
   for (var i = 0; i < glaph.length; ++i) {
     glaph[i].update();
   }
 }
 
+// ログ名からグラフを参照し、対応したグラフにデータを追加する
 function addGlaphData(data) {
   var glaphid;
   glaphid = getGlaphNumberFromName(data.name);
@@ -95,6 +91,7 @@ function addGlaphData(data) {
   glaph[glaphid].addData(data);
 }
 
+// ログ名からグラフを参照し、対応したグラフの見た目を変更する
 function changeGlaphDisplay(data) {
   var glaphid;
   glaphid = getGlaphNumberFromName(data.name);
@@ -102,6 +99,7 @@ function changeGlaphDisplay(data) {
   glaph[glaphid].changeDisplay(data);
 }
 
+// ログ名から対応するグラフの番号を返す
 function getGlaphNumberFromName(name: String) {
   var i = 0;
   for (i = 0; i < glaph.length; ++i) {

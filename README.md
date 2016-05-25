@@ -11,7 +11,7 @@ EV3からPCにログデータを送信します。
 
 
 ###使用時
-1. EV3のプログラムでLogSenderを呼び出すコードを書く<br>
+1. EV3のプログラムでLogSenderを呼び出すコードを書く
 一例がLogSenderEV3/LogSender_EV3/src/testcode/Test*.javaにある
 2. EV3でプログラムを実行し、connectメソッドが呼び出されるまで待つ
 3. Google Chromeの拡張機能からLogViewerを起動し、左上に表示される接続ボタンを押すと、LogViewerにグラフが表示される<br>

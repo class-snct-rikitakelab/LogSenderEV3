@@ -1,4 +1,5 @@
 /// <reference path="./reference.ts"/>
+// ダウンロードの画像を表示し、ファイルを作る
 function makeDownload() {
     var downloadLink = document.getElementById("download");
     if (downloadLink.hasChildNodes() == false) {
@@ -25,6 +26,7 @@ function makeDownload() {
         a.appendChild(image);
     }
 }
+// 選択されたファイルをグラフ表示する
 function uploadFile() {
     var uploadFile = document.getElementById("upload-file");
     var file = uploadFile.files[0];

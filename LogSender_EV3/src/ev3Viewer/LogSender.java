@@ -8,9 +8,7 @@ import java.util.ArrayList;
 
 
 /**
- *
  * ログ送信クラス
- *
  * */
 public class LogSender {
 
@@ -35,12 +33,10 @@ public class LogSender {
 			try {
 				server = new ServerSocket(SOCKET_PORT);
 				socket = server.accept();
-				// inputStream = new DataInputStream(socket.getInputStream());
+				// inputStream = new DataInputStream(socket.getInputStream()); // 現状viewerからsenderに送信する機能はない
 				outputStream = new DataOutputStream(socket.getOutputStream());
 			} catch (IOException ex) {
 				server = null;
-				// socket = null;
-				// inputStream = null;
 				outputStream = null;
 				return false;
 			}
@@ -50,7 +46,6 @@ public class LogSender {
 
 	/**
 	 * ビューアとの接続を切断します。
-	 *
 	 * @return 切断に成功した場合はtrue、失敗した場合はfalseを返します。
 	 */
 	public boolean disconnect() {
@@ -65,8 +60,8 @@ public class LogSender {
 
 	/** ログデータを追加します。
 	 *  @param name ログの名前
-	 *  value ログの値
-	 *  time タイムスタンプ */
+	 *  @param value ログの値
+	 *  @param time タイムスタンプ */
 	public void addLog(String name, String value, float time) {
 		Log log = new Log();
 		log.setName(name);
@@ -77,8 +72,8 @@ public class LogSender {
 
 	/** ログデータを追加します。
 	 *  @param name ログの名前
-	 *  value ログの値
-	 *  time タイムスタンプ */
+	 *  @param value ログの値
+	 *  @param time タイムスタンプ */
 	public void addLog(String name, int value, float time) {
 		Log log = new Log();
 		log.setName(name);
@@ -89,8 +84,8 @@ public class LogSender {
 
 	/** ログデータを追加します。
 	 *  @param name ログの名前
-	 *  value ログの値
-	 *  time タイムスタンプ */
+	 *  @param value ログの値
+	 *  @param time タイムスタンプ */
 	public void addLog(String name, float value, float time) {
 		Log log = new Log();
 		log.setName(name);
@@ -99,9 +94,9 @@ public class LogSender {
 		Logs.add(log);
 	}
 
-	/** ログの表示方法を変更します。
+	/** ログの表示方法を変更します。変更はsend時に適用されます。
 	 *  @param name ログの名前
-	 *  value ログの値 */
+	 *  @param value ログの値 */
 	public void setGlaph(String name, String value){
 		Log log = new Log();
 		log.setName("#" + name);
@@ -116,7 +111,7 @@ public class LogSender {
 	}
 
 	/**
-	 * ビューアにログデータを送信します。
+	 * addLogを用いて取得したログデータをビューアに送信します。
 	 * @return 送信に成功した場合はtrue、失敗した場合はfalseを返します。
 	 */
 	public boolean send() {

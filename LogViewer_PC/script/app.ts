@@ -1,18 +1,12 @@
-/// <reference path="./reference.ts"/>
+﻿/// <reference path="./reference.ts"/>
 
-var glaph: logGlaph[] = [];
-//glaph[0] = new logGlaph("g1");
-//glaph[getGlaphNumberFromName("g1")].updateGlaph(0.0,1);
-//createSocket();
-//glaphTest();
-/*var linksample = document.getElementById("sample");
-linksample.addEventListener("click", function() {
-   glaphTest();
-});*/
+var glaph: logGlaph[] = [];// 
 
-var linkconnect = document.getElementById("connect");
-linkconnect.addEventListener("click", function () {
-  createSocket();
+// index.htmlで定義したidの画像・ボタンがクリックされた時それぞれ関数を呼び出す
+
+var linkconnect = document.getElementById("connect"); // idからhtmlの要素を探す
+linkconnect.addEventListener("click", function () { // 要素をクリックした時呼び出される
+  createSocket(); // この中で関数を呼び出す
 });
 
 var linkdisconnect = document.getElementById("disconnect");
@@ -25,20 +19,8 @@ upload.addEventListener("click", function () {
   uploadFile();
 });
 
-/* xlengthset = document.getElementById("xlenset");
-xlengthset.addEventListener("click", function() {
-   document.length.x_length.value;
-});
-var xlengthset = document.getElementById("xlenset");
-xlengthset.addEventListener("click", function() {
-});*/
 
-while (true) {
-  //updateGlaph();
-}
-
-//glaphTest();
-
+// LogViewer側用のテストコード
 function glaphTest() {
   parseData("{\"name\":\"value1\",\"type\":\"Number\",\"value\":10,\"time\":1}{\"name\":\"value1\",\"type\":\"Num");
   parseData("ber\",\"value\":40,\"time\":2}{\"name\":\"value1\",\"type\":\"Number\",\"value\":30,\"time\":3}");
@@ -48,3 +30,4 @@ function glaphTest() {
   parseData("ber\",\"value\":10,\"time\":2}{\"name\":\"value3\",\"type\":\"Number\",\"value\":0,\"time\":3}");
   //makeDownload();
 }
+//glaphTest(); 

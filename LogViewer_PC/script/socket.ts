@@ -1,11 +1,11 @@
-/// <reference path="./reference.ts"/>
+﻿/// <reference path="./reference.ts"/>
 
 var clientSocketId: number;
 
+// LogViewerとの接続を確立する
 function createSocket() {
   chrome.sockets.tcp.create({}, function (createInfo) {
     clientSocketId = createInfo.socketId;
-
     chrome.sockets.tcp.connect(clientSocketId, "10.0.1.1", 7360, function (resultCode) {
       if (resultCode < 0) {
         console.log("Error: socket connect failure");
@@ -14,6 +14,7 @@ function createSocket() {
   });
 }
 
+// LogSenderからデータが送信された時に呼ばれる 変数infoが送られたデータ
 chrome.sockets.tcp.onReceive.addListener(function (info) {
   if (info.socketId === clientSocketId) {
     var requestText: string = ab2str(info.data);
@@ -21,12 +22,14 @@ chrome.sockets.tcp.onReceive.addListener(function (info) {
   }
 });
 
+// 何かエラーが起きた時に呼ばれる LogSenderとの通信が切断された時などにも呼ばれる
 chrome.sockets.tcp.onReceiveError.addListener(function (info) {
   console.log("Error: ", info);
   makeDownload();
   updateGlaph();
 });
 
+// 通信を切断する
 function destroySocket() {
   chrome.sockets.tcp.disconnect(clientSocketId);
   chrome.sockets.tcp.close(clientSocketId);
@@ -35,24 +38,7 @@ function destroySocket() {
 }
 
 /**
- * 文字列をArrayBufferに変換する(ASCIIコード専用)
- *
- * @param text
- * @returns {ArrayBuffer}
- */
-function str2ab(text) {
-  var typedArray = new Uint8Array(text.length);
-
-  for (var i = 0; i < typedArray.length; i++) {
-    typedArray[i] = text.charCodeAt(i);
-  }
-
-  return typedArray.buffer;
-}
-
-/**
  * ArrayBufferを文字列に変換する(ASCIIコード専用)
- *
  * @param arrayBuffer
  * @returns {string}
  */

@@ -2,6 +2,7 @@
 var bufferString = "";
 var parseValues = new Object();
 var parseFlag = false;
+// LogViewerから送られた文字列をログ名、ログ値、タイムスタンプに分ける
 function parseData(text) {
     //console.log(text);
     for (var i = 0; i <= text.length; i++) {
@@ -27,10 +28,10 @@ function parseData(text) {
             parseFlag = false;
             parseValues = new Object();
         }
-        else if (text.charAt(i) == "{") { }
+        else if (text.charAt(i) == "{") { } // 「{」なら何もしない
         else {
-            bufferString += text.charAt(i);
+            bufferString += text.charAt(i); // その他の文字なら文字をバッファに貯める
         }
     }
-    updateGlaph();
+    updateGlaph(); // ログの追加が終わったらグラフの表示を更新する
 }
