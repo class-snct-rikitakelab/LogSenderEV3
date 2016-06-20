@@ -5,16 +5,11 @@ public class ForwardCalculator {
 
 	private float preDiff;
 
-	public float curspeed;
-	public float targetspeed;
-
 	public ForwardCalculator(EV3Body body){
 		spKeeper = new SpeedKeeper();
 		spMeasure = new SpeedMeasure(body);
 
 		preDiff = 0.0F;
-		this.curspeed = 0.0F;
-		this.targetspeed = 0.0F;
 	}
 
 	public float calForward() {
@@ -29,10 +24,8 @@ public class ForwardCalculator {
 		float kp = 0.01F;
 		float kd = -0.01F;
 
-		curspeed = spMeasure.getSpeed();
-		targetspeed = spKeeper.getTarget();
 
-		float diff = targetspeed - curspeed;
+		float diff = spKeeper.getTarget() - spMeasure.getSpeed();
 
 		float deltaFor = kp * diff + kd * (diff - preDiff) / 0.004F; //PD制御 diffを微分する際のDeltaTimeは0.004[ms]と仮定してある
 
