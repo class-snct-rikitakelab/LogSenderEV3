@@ -2,14 +2,16 @@ package testcode;
 
 import java.util.TimerTask;
 
-import ev3Viewer.LogSender;
 import lejos.hardware.Battery;
+import ev3Viewer.LogSender;
 
 public class DriveTask extends TimerTask{
 
 	private int waitcount = 0;
 	private static EV3Body body;
 	private LogSender ls;
+	private SpeedKeeper spKeeper;
+	private ForwardCalculator forCalc;
 
 	private static long starttime;
 
@@ -19,6 +21,9 @@ public class DriveTask extends TimerTask{
 		this.waitcount = 0;
 
 		starttime = System.nanoTime();
+		spKeeper = new SpeedKeeper();
+		forCalc = new ForwardCalculator(this.body);
+		spKeeper.setTarget(100.0F);
 	}
 
 	@Override
@@ -26,22 +31,26 @@ public class DriveTask extends TimerTask{
 		// TODO 自動生成されたメソッド・スタブ
 		tailControl(0);
 
-		float forward = 40.0F;
 		float turn = 0.0F;
 
-		if(body.getBrightness() > 0.2){
-			turn = 50.0F;
-		}else{
-			turn = -50.0F;
-		}
+//		if(body.getBrightness() > 0.2){
+//			turn = 50.0F;
+//		}else{
+//			turn = -50.0F;
+//		}
+		
+		float forward = forCalc.calForward();
 
-		if(++waitcount > 50){
-			ls.addLog("Bright", body.getBrightness(), (System.nanoTime()-starttime)/1000000);
+		if(++waitcount > 100){
 			waitcount = 0;
 		}
 
 		Balancer.control(forward, turn, body.getGyroValue(),0.0F, body.motorPortL.getTachoCount(), body.motorPortR.getTachoCount(), Battery.getVoltageMilliVolt());
+		body.motorPortL.controlMotor(Balancer.getPwmL(), 1);
+    	body.motorPortR.controlMotor(Balancer.getPwmR(), 1);
 
+    	//Delay.msDelay(4);
+    	
 	}
 
 	private static final void tailControl(int angle) {
