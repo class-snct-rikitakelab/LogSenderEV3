@@ -2,8 +2,8 @@ package testcode;
 
 import java.util.TimerTask;
 
-import lejos.hardware.Battery;
 import ev3Viewer.LogSender;
+import lejos.hardware.Battery;
 
 public class DriveTask extends TimerTask{
 
@@ -12,6 +12,8 @@ public class DriveTask extends TimerTask{
 	private LogSender ls;
 	private SpeedKeeper spKeeper;
 	private ForwardCalculator forCalc;
+
+	private float forward = 0.0F;
 
 	private static long starttime;
 
@@ -23,7 +25,7 @@ public class DriveTask extends TimerTask{
 		starttime = System.nanoTime();
 		spKeeper = new SpeedKeeper();
 		forCalc = new ForwardCalculator(this.body);
-		spKeeper.setTarget(100.0F);
+		spKeeper.setTarget(30.0F);
 	}
 
 	@Override
@@ -38,19 +40,27 @@ public class DriveTask extends TimerTask{
 //		}else{
 //			turn = -50.0F;
 //		}
-		
-		float forward = forCalc.calForward();
 
+		float delta = forCalc.caldelForward();
+
+		forward += delta;
+
+		//forward = 20.0F;
+
+		/*
 		if(++waitcount > 100){
 			waitcount = 0;
-		}
+			float time = (System.nanoTime()-starttime)/1000000;
+			ls.addLog("target", forCalc.targetspeed,time);
+			ls.addLog("current", forCalc.curspeed,time);
+		}*/
 
 		Balancer.control(forward, turn, body.getGyroValue(),0.0F, body.motorPortL.getTachoCount(), body.motorPortR.getTachoCount(), Battery.getVoltageMilliVolt());
 		body.motorPortL.controlMotor(Balancer.getPwmL(), 1);
     	body.motorPortR.controlMotor(Balancer.getPwmR(), 1);
 
     	//Delay.msDelay(4);
-    	
+
 	}
 
 	private static final void tailControl(int angle) {
