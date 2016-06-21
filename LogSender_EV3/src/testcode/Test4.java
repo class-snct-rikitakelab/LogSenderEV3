@@ -2,12 +2,12 @@ package testcode;
 
 import java.util.Timer;
 
+import ev3Viewer.LogSender;
 import lejos.hardware.Battery;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.port.BasicMotorPort;
 import lejos.utility.Delay;
-import ev3Viewer.LogSender;
 
 public class Test4 {
 	//定数
@@ -50,21 +50,26 @@ public class Test4 {
 		body.motorPortL.resetTachoCount();   // left motor encoder reset
 		body.motorPortR.resetTachoCount();   // right motor encoder reset
 		Balancer.init();            // inverted pendulum control initialization
-		//sender.connect();
+		Sound.beep();
+		sender.connect();
 		for(int i=0;i<1500;i++){
 			sender.addLog("Speed4", -1, (System.nanoTime()-starttime)/1000000);
 		}
 		sender.clear();
 		LCD.drawString("ready", 0, 0);
 		Sound.beep();
+
+		int hogecount = 0;
+
 		boolean touchPressed = false;
 		for (;;) {
 			tailControl(body, TAIL_ANGLE_STAND_UP); //complete stop for angle control
-			if (body.touchSensorIsPressed()) {
-				touchPressed = true;          // touch sensor is pressed
-			} else {
-				if (touchPressed) break;      // touch sensor I was released after being pressed
+
+			if(hogecount > 100){
+				break;
 			}
+			hogecount++;
+
 			Delay.msDelay(20);
 		}
 
@@ -72,18 +77,19 @@ public class Test4 {
 		Timer timer = new Timer();
 
 		timer.scheduleAtFixedRate(driveTask, 0, 4);
-		
+
 		int count = 0;
 
 		while(true){
 			count++;
 			if(body.touchSensorIsPressed()){
-				if(count > 20000){
+				if(count > 200000){
 					driveTask.cancel();
 					timer.cancel();
 					break;
 				}
 			}
+
 		}
 
 //		speed = 0;

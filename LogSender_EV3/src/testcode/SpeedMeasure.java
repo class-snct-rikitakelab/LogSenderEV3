@@ -6,12 +6,13 @@ public class SpeedMeasure {
 
 	private int oldTachoL;
 	private int oldTachoR;
-	//private long oldmilliSec;
+	private long oldmilliSec;
+
 
 	public SpeedMeasure(EV3Body body){
 		this.body = body;
 		oldTachoL = oldTachoR = 0;
-		//oldmilliSec = System.currentTimeMillis();
+		oldmilliSec = System.currentTimeMillis();
 	}
 
 	public float getSpeed() {
@@ -23,17 +24,18 @@ public class SpeedMeasure {
 
 		tachoL = body.motorPortL.getTachoCount();
 		tachoR = body.motorPortR.getTachoCount();
-		//milliSec = System.currentTimeMillis();
+		milliSec = System.currentTimeMillis();
 
-		dTacho = (float)((tachoL - oldTachoL) + (tachoR - oldTachoR)) / 2;
-		//speed = (float)dTacho / ((float)milliSec - (float)oldmilliSec);
+		//dTacho = (float)((tachoL - oldTachoL) + (tachoR - oldTachoR)) / 2.0F;
 
-		speed = (float)dTacho/10;
+		dTacho = ((tachoL - oldTachoL) + (tachoR - oldTachoR));
+		speed = (float)dTacho / (float)((int)milliSec - (int)oldmilliSec);
 
+		//speed = (float)dTacho/10.0F;
 
 		oldTachoL = tachoL;
 		oldTachoR = tachoR;
-		//oldmilliSec = milliSec;
+		oldmilliSec = milliSec;
 
 
 		return speed;
