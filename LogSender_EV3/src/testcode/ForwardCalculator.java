@@ -28,11 +28,11 @@ public class ForwardCalculator {
 	}
 
 	public float caldelForward(){
-		spKeeper.setTarget(0.5F);
+		spKeeper.setTarget(1.0F);
 
-		float kp = 0.008F;
-		float kd = -0.0F;
-		float ki = 0.0F;
+		float kp = 2.1F;
+		float kd = -0.1F;
+		float ki = 10.0F;
 
 		long milliSec = System.currentTimeMillis();
 		float timeDiff = (float)((int)milliSec - (int)premilliSec);

@@ -28,7 +28,7 @@ public class SpeedMeasure {
 
 		//dTacho = (float)((tachoL - oldTachoL) + (tachoR - oldTachoR)) / 2.0F;
 
-		dTacho = ((tachoL - oldTachoL) + (tachoR - oldTachoR));
+		dTacho = (float)((tachoL - oldTachoL) + (tachoR - oldTachoR))/2.0F;
 		speed = (float)dTacho / (float)((int)milliSec - (int)oldmilliSec);
 
 		//speed = (float)dTacho/10.0F;

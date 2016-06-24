@@ -2,8 +2,8 @@ package testcode;
 
 import java.util.TimerTask;
 
-import ev3Viewer.LogSender;
 import lejos.hardware.Battery;
+import ev3Viewer.LogSender;
 
 public class DriveTask extends TimerTask{
 
@@ -60,12 +60,14 @@ public class DriveTask extends TimerTask{
 			ls.addLog("speed", forCalc.curspd,time);
 		}
 
-		if(forward > 50.0F){
+		if(forward > 100.0F){
 			forward = 50.0F;
-		}else if(forward < -50.0F){
+		}else if(forward < -100.0F){
 			forward = 50.0F;
 		}
 
+		forward = 70.0F;
+		
 		Balancer.control(forward, turn, body.getGyroValue(),0.0F, body.motorPortL.getTachoCount(), body.motorPortR.getTachoCount(), Battery.getVoltageMilliVolt());
 		body.motorPortL.controlMotor(Balancer.getPwmL(), 1);
     	body.motorPortR.controlMotor(Balancer.getPwmR(), 1);
