@@ -2,3 +2,4 @@ LogViewer_PC/bin/
 LogViewer_PC/obj/
 LogSender_EV3/bin/
 *.jar
+LogViewer_PC/.vs/config/applicationhost.config

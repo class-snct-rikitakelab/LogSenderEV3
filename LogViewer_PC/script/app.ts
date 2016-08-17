@@ -19,6 +19,10 @@ upload.addEventListener("click", function () {
   uploadFile();
 });
 
+var upload = document.getElementById("send");
+upload.addEventListener("click", function () {
+  sendText();
+});
 
 // LogViewer側用のテストコード
 function glaphTest() {

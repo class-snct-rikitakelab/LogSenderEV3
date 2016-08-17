@@ -1,7 +1,9 @@
 package ev3Viewer;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class LogSender {
 	private ServerSocket server = null;
 	private Socket socket = null;
 	private DataOutputStream outputStream = null;
+	private BufferedReader inputReader = null;
 	private ArrayList<Log> Logs;
 
 
@@ -33,7 +36,7 @@ public class LogSender {
 			try {
 				server = new ServerSocket(SOCKET_PORT);
 				socket = server.accept();
-				// inputStream = new DataInputStream(socket.getInputStream()); // 現状viewerからsenderに送信する機能はない
+				inputReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				outputStream = new DataOutputStream(socket.getOutputStream());
 			} catch (IOException ex) {
 				server = null;
@@ -110,6 +113,11 @@ public class LogSender {
 		Logs.clear();
 	}
 
+	/** メモリにログ保存領域を確保します。 */
+	public void setLogSize(int size){
+		Logs.ensureCapacity(size);
+	}
+
 	/**
 	 * addLogを用いて取得したログデータをビューアに送信します。
 	 * @return 送信に成功した場合はtrue、失敗した場合はfalseを返します。
@@ -142,6 +150,24 @@ public class LogSender {
 
 		return true;
 	}
+
+	/** LogViewerから送信した文字列を受け取ります。
+	 * @return 送信した文字列。 何も受け取らなかった時は空文字列になります。 */
+	public String recieve(){
+		String text = "";
+		try {
+			if(inputReader.ready())
+			text = inputReader.readLine();
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		if(text==null)text = "";
+
+
+		return text;
+	}
+
 }
 
 class Log {

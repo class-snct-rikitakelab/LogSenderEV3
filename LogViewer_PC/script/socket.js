@@ -24,12 +24,32 @@ chrome.sockets.tcp.onReceiveError.addListener(function (info) {
     makeDownload();
     updateGlaph();
 });
+// 文字列を送信する
+function sendText() {
+    var text = document.getElementById("send-text").value;
+    text += "\n";
+    console.log(text);
+    chrome.sockets.tcp.send(clientSocketId, str2ab(text), function callback(sendInfo) { });
+}
 // 通信を切断する
 function destroySocket() {
     chrome.sockets.tcp.disconnect(clientSocketId);
     chrome.sockets.tcp.close(clientSocketId);
     makeDownload();
     updateGlaph();
+}
+/**
+ * 文字列をArrayBufferに変換する(ASCIIコード専用)
+ *
+ * @param text
+ * @returns {ArrayBuffer}
+ */
+function str2ab(text) {
+    var typedArray = new Uint8Array(text.length);
+    for (var i = 0; i < typedArray.length; i++) {
+        typedArray[i] = text.charCodeAt(i);
+    }
+    return typedArray.buffer;
 }
 /**
  * ArrayBufferを文字列に変換する(ASCIIコード専用)

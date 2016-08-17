@@ -13,6 +13,10 @@ var upload = document.getElementById("upload");
 upload.addEventListener("click", function () {
     uploadFile();
 });
+var upload = document.getElementById("send");
+upload.addEventListener("click", function () {
+    sendText();
+});
 // LogViewer側用のテストコード
 function glaphTest() {
     parseData("{\"name\":\"value1\",\"type\":\"Number\",\"value\":10,\"time\":1}{\"name\":\"value1\",\"type\":\"Num");
