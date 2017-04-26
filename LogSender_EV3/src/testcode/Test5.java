@@ -20,13 +20,10 @@ public class Test5 {
 		startTime = System.nanoTime();
 		for(int i = 0; i <= 10000; ++i){
 			sender.addLog("battery", Battery.getVoltageMilliVolt(), time());
-			sender.addLog("rand", (float)Math.random(),time());
-			sender.addLog("rand2", (float)Math.random(),time());
-			sender.addLog("rand3", (float)Math.random(),time());
-			sender.addLog("rand4", (float)Math.random(),time());
+			sender.addLog("random", (float)Math.random(),time());
 			sender.send();
 			LCD.drawString(sender.recieve(), 1, 4);
-			Delay.msDelay(100);
+			Delay.msDelay(1000);
 		}
 	}
 	private static float time(){
