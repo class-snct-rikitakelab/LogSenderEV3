@@ -151,8 +151,8 @@ public class LogSender {
 		return true;
 	}
 
-	/** LogViewerから送信した文字列を受け取ります。
-	 * @return 送信した文字列。 何も受け取らなかった時は空文字列になります。 */
+	/** LogViewerから受信した文字列を受け取ります。
+	 * @return 受信した文字列。 何も受け取らなかった時は空文字列になります。 */
 	public String recieve(){
 		String text = "";
 		try {
