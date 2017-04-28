@@ -3,14 +3,14 @@
 EV3からPCにログデータを送信します。
 
 
-##使い方
+## 使い方
 
-###準備
+### 準備
 1. LogSender_EV3/src/ev3Viewer/LogSender.javaを、EV3のプロジェクトにコピーする
 2. Google Chromeを立ち上げ、拡張機能画面で、デベロッパーモードを選択し、「パッケージ化されていない拡張機能を読み込む」を選択し、LogSender_PCを選択する
 
 
-###使用時
+### 使用時
 1. EV3のプログラムでLogSenderを呼び出すコードを書く
 一例がLogSenderEV3/LogSender_EV3/src/testcode/Test*.javaにある
 2. EV3でプログラムを実行し、connectメソッドが呼び出されるまで待つ
